@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'app.apps.AppConfig'
+    'app.apps.AppConfig',
+        'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -122,3 +123,13 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Source - https://stackoverflow.com/q
+# Posted by Dan, modified by community. See post 'Timeline' for change history
+# Retrieved 2025-12-09, License - CC BY-SA 2.5
+
+MEDIA_ROOT = BASE_DIR/'media/'
+
+MEDIA_URL = '/media/'
+
+AUTH_USER_MODEL = 'app.CustomUser'
