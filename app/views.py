@@ -8,7 +8,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from .permissons import IsAdmin,IsSuperAdmin
+from .permissons import IsAdmin,IsSuperAdmin,IsAdmin_or_SuperAdmin
 from .serializers import LoginSerializer,RegisterSerializers,UserSerializer,ProfileSerializer,PasswordChangeSerializer
 
 
@@ -30,8 +30,7 @@ class LoginViewSets(APIView):
 
 class AdminCreate(APIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-    permission_classes = [IsSuperAdmin]
+    permission_classes = [IsAuthenticated,IsSuperAdmin]
 
     def post(self,request:Request)->Response:
         serializer = RegisterSerializers(data = request.data)
@@ -56,7 +55,7 @@ class LogoutViewSets(APIView):
 
 class ProfileViewSets(APIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated,IsAdmin_or_SuperAdmin]
 
 
     def get(self,request:Request)->Response:
@@ -75,7 +74,7 @@ class ProfileViewSets(APIView):
     
 class PasswordChangeViewSets(APIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated,IsAdmin_or_SuperAdmin]
 
     def post(self,request:Request)->Response:
         serilizers = PasswordChangeSerializer(data = request.data)

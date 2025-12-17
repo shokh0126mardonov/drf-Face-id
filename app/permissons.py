@@ -12,3 +12,9 @@ class IsSuperAdmin(BasePermission):
 
     def has_permission(self, request, view):
         return request.user and request.user.is_superadmin
+    
+class IsAdmin_or_SuperAdmin(BasePermission):
+    message = 'siz adminlik huquqiga ega emassiz'
+
+    def has_permission(self, request, view):
+        return (request.user and request.user.is_admin) or (request.user and request.user.is_superadmin)
