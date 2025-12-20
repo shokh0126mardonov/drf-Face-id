@@ -21,16 +21,17 @@ class Student(models.Model):
         ERKAK = 'ERKAK','Erkak'
         AYOL = 'AYOL','Ayol'
 
+    admin = models.ForeignKey("CustomUser",on_delete=models.SET_NULL,null=True,blank=True,)
     gender = models.CharField(choices=Gender.choices,default=Gender.ERKAK, max_length=50)
     name = models.CharField(max_length=100)
     year = models.IntegerField()
-    faculty = models.CharField(max_length=100)
-    direction = models.CharField(max_length=100)
+    faculty = models.CharField(max_length=100,blank=True,null=True)
+    direction = models.CharField(max_length=100,blank=True,null=True)
     room = models.IntegerField()
     number = models.CharField(max_length=15)
-    parent_number = models.CharField(max_length=15)
-    home_number = models.CharField(max_length=15)
-    location = models.CharField(max_length=128)
+    parent_number = models.CharField(max_length=15,blank=True,null=True)
+    home_number = models.CharField(max_length=15,blank=True,null=True)
+    location = models.CharField(max_length=128,blank=True,null=True)
     token = models.CharField(max_length=100)
     image = models.ImageField(upload_to='images/')
 
@@ -68,6 +69,10 @@ class Rules(models.Model):
     class Gender(models.TextChoices):
         ERKAK = 'ERKAK','Erkak'
         AYOL = 'AYOL','Ayol'
+    gender = models.CharField(choices=Gender.choices, max_length=50)
     admin = models.ForeignKey("CustomUser",on_delete=models.SET_NULL,null=True,blank=True,)
     time = models.TimeField()
     exit_time = models.TimeField()
+
+    def __str__(self):
+        return f"{self.pk}"

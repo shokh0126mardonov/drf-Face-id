@@ -1,7 +1,16 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 
+from .models import Student,Rules
+
 User = get_user_model()
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        exclude = ['groups', 'user_permissions', 'is_staff', 'is_superuser', 'last_login','password','role','date_joined','is_active']
+
 
 class RegisterSerializers(serializers.ModelSerializer):
     class Meta:
@@ -16,12 +25,6 @@ class RegisterSerializers(serializers.ModelSerializer):
         user.save()
 
         return user
-    
-
-class UserSerializer(serializers.Serializer):
-    class Meta:
-        model = User
-        exclude = ['groups', 'user_permissions', 'is_staff', 'is_superuser', 'last_login']
 
 
 class LoginSerializer(serializers.Serializer):
@@ -47,3 +50,18 @@ class PasswordChangeSerializer(serializers.Serializer):
         if attrs['password'] != attrs['confirm']:
             raise serializers.ValidationError('Password va confirm teng emas!')
         return super().validate(attrs)
+    
+class StudentSerializers(serializers.ModelSerializer):
+
+    class Meta:
+        model = Student
+        exclude = ['created_at','updated_at']
+        
+    admin = UserSerializer(read_only=True)
+
+class RulesSerializers(serializers.ModelSerializer):
+    admin = UserSerializer(read_only=True)
+    
+    class Meta:
+        model = Rules
+        fields = ['id','gender','time','exit_time','admin']
