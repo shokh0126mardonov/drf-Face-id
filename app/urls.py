@@ -31,7 +31,7 @@ urlpatterns = [
 
     #Payments
     path('payment/',PaymentsViewSets.as_view({'get': 'list', 'post': 'create'})),
-    path('payment/<int:pk>/',PaymentsViewSets.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'})),
+    path('payment/<int:pk>/',PaymentsViewSets.as_view({'get': 'retrieve', 'put': 'update'})),
 
     #Truckings
     path('trucking/',TruckingViewSets.as_view())
