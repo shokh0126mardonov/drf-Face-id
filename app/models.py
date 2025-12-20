@@ -32,7 +32,7 @@ class Student(models.Model):
     parent_number = models.CharField(max_length=15,blank=True,null=True)
     home_number = models.CharField(max_length=15,blank=True,null=True)
     location = models.CharField(max_length=128,blank=True,null=True)
-    token = models.CharField(max_length=100)
+    token = models.CharField()
     image = models.ImageField(upload_to='images/')
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -47,13 +47,17 @@ class Payment(models.Model):
         PARTIALLY = "partial", "Qisman to'langan"
         UNPAID = "unpaid", "To'lanmagan"
 
-    student = models.ForeignKey("Student", verbose_name=("payment"), on_delete=models.SET_NULL,related_name='payment',null=True,blank=True,)
-    amount = models.IntegerField(default=0)
+    admin = models.ForeignKey("CustomUser",on_delete=models.SET_NULL,null=True,blank=True)
+    student = models.ForeignKey("Student", verbose_name=("payment"), on_delete=models.CASCADE,related_name='payment')
+    amount = models.IntegerField()
     month = models.DateField()
     status = models.CharField(choices=PaymentChoices.choices,default=PaymentChoices.UNPAID,max_length=50)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.student.name} {self.student.room}"
 
 
 class Tracking(models.Model):
@@ -69,10 +73,10 @@ class Rules(models.Model):
     class Gender(models.TextChoices):
         ERKAK = 'ERKAK','Erkak'
         AYOL = 'AYOL','Ayol'
-    gender = models.CharField(choices=Gender.choices, max_length=50)
-    admin = models.ForeignKey("CustomUser",on_delete=models.SET_NULL,null=True,blank=True,)
-    time = models.TimeField()
-    exit_time = models.TimeField()
+    gender = models.CharField(choices=Gender.choices, max_length=50,unique=True)
+    admin = models.ForeignKey("CustomUser",on_delete=models.SET_NULL,null=True,blank=True)
+    login_time = models.TimeField() #kirish taqiqlanadi
+    exit_time = models.TimeField()  #chiqish mumkin
 
     def __str__(self):
-        return f"{self.pk}"
+        return f"{self.admin.username}"

@@ -130,9 +130,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Posted by Dan, modified by community. See post 'Timeline' for change history
 # Retrieved 2025-12-09, License - CC BY-SA 2.5
 
-MEDIA_ROOT = BASE_DIR/'media/'
+import os
 
 MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media/'
 
 AUTH_USER_MODEL = 'app.CustomUser'
 

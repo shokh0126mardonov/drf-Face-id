@@ -1,5 +1,15 @@
 from django.urls import path
-from .views import LoginViewSets,AdminCreate,LogoutViewSets,ProfileViewSets,PasswordChangeViewSets,StudentViewSets,RulesviewSets
+from .views import (
+    LoginViewSets,
+    AdminCreate,
+    LogoutViewSets,
+    ProfileViewSets,
+    PasswordChangeViewSets,
+    StudentViewSets,
+    RulesviewSets,
+    PaymentsViewSets,
+    TruckingViewSets
+    )
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -17,7 +27,16 @@ urlpatterns = [
 
     # User Crud
     path('students/',StudentViewSets.as_view({'get': 'list', 'post': 'create'})),
-    path('students/<int:pk>/',StudentViewSets.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}))
+    path('students/<int:pk>/',StudentViewSets.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'})),
+
+    #Payments
+    path('payment/',PaymentsViewSets.as_view({'get': 'list', 'post': 'create'})),
+    path('payment/<int:pk>/',PaymentsViewSets.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'})),
+
+    #Truckings
+    path('trucking/',TruckingViewSets.as_view())
+] 
 
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

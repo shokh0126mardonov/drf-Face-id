@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 
-from .models import Student,Rules
+from .models import Student,Rules,Payment
 
 User = get_user_model()
 
@@ -52,16 +52,44 @@ class PasswordChangeSerializer(serializers.Serializer):
         return super().validate(attrs)
     
 class StudentSerializers(serializers.ModelSerializer):
+    admin = UserSerializer(read_only=True)
 
     class Meta:
         model = Student
         exclude = ['created_at','updated_at']
+
+    
+    def get_image(self, obj):
+        request = self.context.get('request')
+        if obj.image and request:
+            return request.build_absolute_uri(obj.image.url)
+        elif obj.image:
+            return obj.image.url
+        return None
         
-    admin = UserSerializer(read_only=True)
 
 class RulesSerializers(serializers.ModelSerializer):
     admin = UserSerializer(read_only=True)
     
     class Meta:
         model = Rules
-        fields = ['id','gender','time','exit_time','admin']
+        fields = ['id','gender','login_time','exit_time','admin']
+
+class PaymentSerializer(serializers.ModelSerializer):
+    admin = UserSerializer(read_only=True)
+    student_id = serializers.IntegerField(write_only=True)  # POST uchun
+    student = StudentSerializers(read_only=True)           # GET uchun
+
+    class Meta:
+        model = Payment
+        fields = ['id','admin','student','student_id','amount','month','status','created_at','updated_at']
+
+    def create(self, validated_data):
+        student_id = validated_data.pop('student_id')
+        student = Student.objects.get(id=student_id)
+        return Payment.objects.create(student=student, **validated_data)
+
+
+class TrackingSerializers(serializers.Serializer):
+    token = serializers.CharField()
+    status = serializers.CharField()
