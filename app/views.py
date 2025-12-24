@@ -1,4 +1,3 @@
-from django.utils import timezone
 from datetime import datetime
 
 from django.contrib.auth import authenticate
@@ -14,7 +13,6 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.filters import SearchFilter, OrderingFilter
-from django.shortcuts import get_object_or_404
 
 from .permissons import IsAdmin, IsSuperAdmin, IsAdmin_or_SuperAdmin
 from .serializers import (
