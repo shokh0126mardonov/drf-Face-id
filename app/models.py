@@ -4,36 +4,45 @@ from django.contrib.auth.models import AbstractUser
 
 class CustomUser(AbstractUser):
     class Role(models.TextChoices):
-        ADMIN = 'ADMIN', 'Admin'
-        SUPERADMIN = 'SUPERADMIN', 'Superadmin'
-    role = models.CharField(choices=Role.choices,default=Role.ADMIN, max_length=10)
+        ADMIN = "ADMIN", "Admin"
+        SUPERADMIN = "SUPERADMIN", "Superadmin"
+
+    role = models.CharField(choices=Role.choices, default=Role.ADMIN, max_length=10)
 
     @property
     def is_admin(self):
         return self.role == self.Role.ADMIN
-    
+
     @property
     def is_superadmin(self):
         return self.role == self.Role.SUPERADMIN
 
+
 class Student(models.Model):
     class Gender(models.TextChoices):
-        ERKAK = 'ERKAK','Erkak'
-        AYOL = 'AYOL','Ayol'
+        ERKAK = "ERKAK", "Erkak"
+        AYOL = "AYOL", "Ayol"
 
-    admin = models.ForeignKey("CustomUser",on_delete=models.SET_NULL,null=True,blank=True,)
-    gender = models.CharField(choices=Gender.choices,default=Gender.ERKAK, max_length=50)
+    admin = models.ForeignKey(
+        "CustomUser",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+    gender = models.CharField(
+        choices=Gender.choices, default=Gender.ERKAK, max_length=50
+    )
     name = models.CharField(max_length=100)
     year = models.IntegerField()
-    faculty = models.CharField(max_length=100,blank=True,null=True)
-    direction = models.CharField(max_length=100,blank=True,null=True)
+    faculty = models.CharField(max_length=100, blank=True, null=True)
+    direction = models.CharField(max_length=100, blank=True, null=True)
     room = models.IntegerField()
     number = models.CharField(max_length=15)
-    parent_number = models.CharField(max_length=15,blank=True,null=True)
-    home_number = models.CharField(max_length=15,blank=True,null=True)
-    location = models.CharField(max_length=128,blank=True,null=True)
+    parent_number = models.CharField(max_length=15, blank=True, null=True)
+    home_number = models.CharField(max_length=15, blank=True, null=True)
+    location = models.CharField(max_length=128, blank=True, null=True)
     token = models.CharField()
-    image = models.ImageField(upload_to='images/')
+    image = models.ImageField(upload_to="images/")
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -41,17 +50,27 @@ class Student(models.Model):
     def __str__(self):
         return f"{self.name} {self.room}"
 
+
 class Payment(models.Model):
     class PaymentChoices(models.TextChoices):
         PAID = "paid", "To'langan"
         PARTIALLY = "partial", "Qisman to'langan"
         UNPAID = "unpaid", "To'lanmagan"
 
-    admin = models.ForeignKey("CustomUser",on_delete=models.SET_NULL,null=True,blank=True)
-    student = models.ForeignKey("Student", verbose_name=("payment"), on_delete=models.CASCADE,related_name='payment')
+    admin = models.ForeignKey(
+        "CustomUser", on_delete=models.SET_NULL, null=True, blank=True
+    )
+    student = models.ForeignKey(
+        "Student",
+        verbose_name=("payment"),
+        on_delete=models.CASCADE,
+        related_name="payment",
+    )
     amount = models.IntegerField()
     month = models.DateField()
-    status = models.CharField(choices=PaymentChoices.choices,default=PaymentChoices.UNPAID,max_length=50)
+    status = models.CharField(
+        choices=PaymentChoices.choices, default=PaymentChoices.UNPAID, max_length=50
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -62,21 +81,27 @@ class Payment(models.Model):
 
 class Tracking(models.Model):
     class TrackingChoices(models.TextChoices):
-        KIRDI = 'KIRDI','Kirdi'
-        CHIQDI = 'CHIQDI','Chiqdi'
-    student = models.ForeignKey("Student", on_delete=models.CASCADE,related_name='tracking')
+        KIRDI = "KIRDI", "Kirdi"
+        CHIQDI = "CHIQDI", "Chiqdi"
+
+    student = models.ForeignKey(
+        "Student", on_delete=models.CASCADE, related_name="tracking"
+    )
     status = models.CharField(choices=TrackingChoices.choices, max_length=50)
     time = models.DateTimeField()
 
 
 class Rules(models.Model):
     class Gender(models.TextChoices):
-        ERKAK = 'ERKAK','Erkak'
-        AYOL = 'AYOL','Ayol'
-    gender = models.CharField(choices=Gender.choices, max_length=50,unique=True)
-    admin = models.ForeignKey("CustomUser",on_delete=models.SET_NULL,null=True,blank=True)
-    login_time = models.TimeField() #kirish taqiqlanadi
-    exit_time = models.TimeField()  #chiqish mumkin
+        ERKAK = "ERKAK", "Erkak"
+        AYOL = "AYOL", "Ayol"
+
+    gender = models.CharField(choices=Gender.choices, max_length=50, unique=True)
+    admin = models.ForeignKey(
+        "CustomUser", on_delete=models.SET_NULL, null=True, blank=True
+    )
+    login_time = models.TimeField()  # kirish taqiqlanadi
+    exit_time = models.TimeField()  # chiqish mumkin
 
     def __str__(self):
         return f"{self.admin.username}"

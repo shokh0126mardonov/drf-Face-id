@@ -4,35 +4,34 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('app', '0001_initial'),
+        ("app", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='student',
-            name='direction',
+            model_name="student",
+            name="direction",
             field=models.CharField(blank=True, max_length=100, null=True),
         ),
         migrations.AlterField(
-            model_name='student',
-            name='faculty',
+            model_name="student",
+            name="faculty",
             field=models.CharField(blank=True, max_length=100, null=True),
         ),
         migrations.AlterField(
-            model_name='student',
-            name='home_number',
+            model_name="student",
+            name="home_number",
             field=models.CharField(blank=True, max_length=15, null=True),
         ),
         migrations.AlterField(
-            model_name='student',
-            name='location',
+            model_name="student",
+            name="location",
             field=models.CharField(blank=True, max_length=128, null=True),
         ),
         migrations.AlterField(
-            model_name='student',
-            name='parent_number',
+            model_name="student",
+            name="parent_number",
             field=models.CharField(blank=True, max_length=15, null=True),
         ),
     ]

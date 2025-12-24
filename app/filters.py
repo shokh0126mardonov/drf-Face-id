@@ -2,10 +2,8 @@ import django_filters
 
 from .models import Student
 
+
 class StudentFilter(django_filters.FilterSet):
     class Meta:
         model = Student
-        fields = {
-            'room': ['exact'],
-            'token':['exact']
-        }
+        fields = {"room": ["exact"], "token": ["exact"]}

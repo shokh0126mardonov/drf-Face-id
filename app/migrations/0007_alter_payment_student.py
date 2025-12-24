@@ -5,15 +5,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('app', '0006_alter_payment_amount'),
+        ("app", "0006_alter_payment_amount"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='payment',
-            name='student',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='payment', to='app.student', verbose_name='payment'),
+            model_name="payment",
+            name="student",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="payment",
+                to="app.student",
+                verbose_name="payment",
+            ),
         ),
     ]

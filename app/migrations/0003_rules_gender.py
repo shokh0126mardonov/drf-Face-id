@@ -4,16 +4,17 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('app', '0002_alter_student_direction_alter_student_faculty_and_more'),
+        ("app", "0002_alter_student_direction_alter_student_faculty_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='rules',
-            name='gender',
-            field=models.CharField(choices=[('ERKAK', 'Erkak'), ('AYOL', 'Ayol')], default=1, max_length=50),
+            model_name="rules",
+            name="gender",
+            field=models.CharField(
+                choices=[("ERKAK", "Erkak"), ("AYOL", "Ayol")], default=1, max_length=50
+            ),
             preserve_default=False,
         ),
     ]
